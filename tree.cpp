@@ -46,7 +46,7 @@ void insert(Node *&tree, string n){
 	}else{
 		string rootValue = tree -> data;
 		
-		if(n.length() < rootValue.length()){
+		if(n.length() <= rootValue.length()){
 			insert(tree -> left, n);
 		}else{
 			insert(tree -> right, n);

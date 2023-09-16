@@ -6,6 +6,10 @@
 #include <sstream>
 #include "tree.hpp"
 
+//CODIGO REALIZADO POR CARLOS DANIEL CHACON MENDEZ
+//CEDULA: C.I 30.201.599
+//SECCION 1
+
 using namespace std;
 
 int main (){
@@ -46,12 +50,13 @@ int main (){
     	
 	    cout<<"\n"<<endl;
 	    
+	    cout<< "Impresion en PostOrden: ";
 	    printInPostOrden(tree);
 	    
 	    cout<<"\n"<<endl;
 
 	
-	    height = calculateHeight(tree);
+	    height = calculateHeight(tree) - 1;
 		leafs = calculateLeafNodes(tree, leafNames, loopCounter);
 	
 		cout<<"\n Altura del arbol " << treeNumber << ": " << height << endl;
@@ -65,10 +70,11 @@ int main (){
 			cout<< "El arbol " << treeNumber << " no esta equilibrado"<<endl;
 		};
 		
-		treeNumber ++;
-		
 		
 		cout<<" --------------------------------------------" <<endl;
+		
+		treeNumber ++;
+		delete tree;
 	
 	}
 	
