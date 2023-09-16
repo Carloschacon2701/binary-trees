@@ -4,89 +4,11 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "tree.hpp"
 
 using namespace std;
 
-struct Node{
-	string data;
-	Node *left;
-	Node *right;
-};
 
-void menu();
-Node *createNode(string);
-void insert(Node *&, string);
-void printInPostOrden(Node *);
-void showBinaryTree(Node *, int);
-void printLeafNames(string[20], int);
-int calculateHeight(Node *);
-int calculateLeafNodes(Node *, string[20], int&);
-bool isBalanced(Node*);
-
-
-int main (){
-	ifstream archive("arbol.txt");
-	
-	if(!archive){
-		cout<< "Archive unabled, please try again"<<endl;
-		return 1;
-	}
-	
-	string line;
-	
-	while(getline(archive, line)){
-		Node *tree = NULL;
-    	int counter = 0;
-    	int height = 0;
-    	int leafs =0;
-    	int loopCounter= 0;
-        string leafNames[20];
-        istringstream iss(line);
-        string word;
-
-
-        
-        while(iss>>word){
-	       insert(tree, word);
-	    }
-	    
-    	showBinaryTree(tree, counter);
-    	
-	    cout<<"\n"<<endl;
-	    
-	    printInPostOrden(tree);
-	    
-	    cout<<"\n"<<endl;
-
-	
-	    height = calculateHeight(tree);
-		leafs = calculateLeafNodes(tree, leafNames, loopCounter);
-	
-		cout<<"\n The height of the tree is " << height << endl;
-		cout<<"\n Number of leafs: " << leafs << endl;
-		
-		printLeafNames(leafNames, leafs);
-		
-		if(isBalanced(tree)){
-			cout<< "the tree is balanced"<<endl;
-		}else{
-			cout<<"the tree is not balanced"<<endl;
-		};
-		
-		
-		cout<<" --------------------------------------------" <<endl;
-	
-	}
-	
-	
-	getch();
-	return 0;
-}
-
- 
-//MENU 
-
-//FUNCTIONS 
 Node *createNode(string n){
 	Node *new_node = new Node();
 	
@@ -195,8 +117,8 @@ bool isBalanced(Node* tree) {
     }
 }
 
-void printLeafNames(string leafNames[20], int leafs){
-	cout<<"Leafs: ";
+void printLeafNames(string leafNames[20], int leafs, int treeNumber){
+	cout<<"Nodos Hojas del arbol " << treeNumber << ": ";
     for(int i=0; i< leafs; i++){
     	
         if(!leafNames[i].empty()){
@@ -206,5 +128,6 @@ void printLeafNames(string leafNames[20], int leafs){
     }
 	cout<< "\n"<<endl;
 }
+
 
 
