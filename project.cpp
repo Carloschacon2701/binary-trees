@@ -18,17 +18,14 @@ Node *createNode(string);
 void insert(Node *&, string);
 void printInPostOrden(Node *);
 void showBinaryTree(Node *, int);
+void printLeafNames(string[20], int);
 int calculateHeight(Node *);
-int calculateLeafNodes(Node *);
+int calculateLeafNodes(Node *, string[20], int&);
+bool isBalanced(Node*);
 
-Node *tree = NULL;
 
 int main (){
 	ifstream archive("arbol.txt");
-    Node *tree = NULL;
-    int counter = 0;
-    int height = 0;
-    int leafs =0;
 	
 	if(!archive){
 		cout<< "Archive unabled, please try again"<<endl;
@@ -38,25 +35,48 @@ int main (){
 	string line;
 	
 	while(getline(archive, line)){
+		Node *tree = NULL;
+    	int counter = 0;
+    	int height = 0;
+    	int leafs =0;
+    	int loopCounter= 0;
+        string leafNames[20];
         istringstream iss(line);
         string word;
+
+
         
         while(iss>>word){
 	       insert(tree, word);
 	    }
+	    
+    	showBinaryTree(tree, counter);
+    	
+	    cout<<"\n"<<endl;
+	    
+	    printInPostOrden(tree);
+	    
+	    cout<<"\n"<<endl;
+
+	
+	    height = calculateHeight(tree);
+		leafs = calculateLeafNodes(tree, leafNames, loopCounter);
+	
+		cout<<"\n The height of the tree is " << height << endl;
+		cout<<"\n Number of leafs: " << leafs << endl;
+		
+		printLeafNames(leafNames, leafs);
+		
+		if(isBalanced(tree)){
+			cout<< "the tree is balanced"<<endl;
+		}else{
+			cout<<"the tree is not balanced"<<endl;
+		};
+		
+		
+		cout<<" --------------------------------------------" <<endl;
 	
 	}
-	
-	showBinaryTree(tree, counter);
-	
-	printInPostOrden(tree);
-	
-	height = calculateHeight(tree);
-	leafs = calculateLeafNodes(tree);
-	
-	cout<<"/n The height of the tree is " << height << endl;
-	cout<<"The leafs are " << leafs << endl;
-	
 	
 	
 	getch();
@@ -123,6 +143,23 @@ void printInPostOrden(Node *tree){
 	}
 };
 
+
+int calculateLeafNodes(Node *tree, string leafNames[20], int& loopCounter){
+	
+	if(tree == NULL){
+		return 0;
+	}else if(tree->right ==NULL && tree->left == NULL){
+		leafNames[loopCounter++] = tree -> data;
+		return 1;
+	}else{
+		int rightLeafs = calculateLeafNodes(tree -> right, leafNames, loopCounter );
+		int leftLeafs = calculateLeafNodes(tree->left, leafNames, loopCounter);
+		
+		return rightLeafs + leftLeafs;
+		
+	}
+}
+
 int calculateHeight(Node *tree){
 	if(tree == NULL){
 		return 0;
@@ -139,19 +176,35 @@ int calculateHeight(Node *tree){
 	}
 };
 
-int calculateLeafNodes(Node *tree){
-	
-	if(tree == NULL){
-		return 0;
-	}else if(tree->right ==NULL && tree->left == NULL){
-		return 1;
-	}else{
-		int rightLeafs = calculateLeafNodes(tree -> right);
-		int leftLeafs = calculateLeafNodes(tree->left);
-		
-		return rightLeafs + leftLeafs;
-		
-	}
+bool isBalanced(Node* tree) {
+    if (tree == NULL) {
+        return true; 
+    } else {
+        int leftHeight = calculateHeight(tree->left);
+        int rightHeight = calculateHeight(tree->right);
+
+        if (abs(leftHeight - rightHeight) > 1) {
+            return false; 
+        }
+
+        if (!isBalanced(tree->left) || !isBalanced(tree->right)) {
+            return false; 
+        }
+        
+        return true; 
+    }
+}
+
+void printLeafNames(string leafNames[20], int leafs){
+	cout<<"Leafs: ";
+    for(int i=0; i< leafs; i++){
+    	
+        if(!leafNames[i].empty()){
+          cout<< leafNames[i] << " ";
+        }
+
+    }
+	cout<< "\n"<<endl;
 }
 
 
